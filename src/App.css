@@ -1,0 +1,298 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+div {
+    display: block;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.HeaderLeft {
+    display: flex;
+    align-items: center;
+}
+
+.logo_a {
+    display: block;
+    width: 176px;
+    height: 70px;
+    line-height: 70px;
+    text-indent: -9999px;
+    color: transparent;
+    background: url(@/assets/frame/topbar.png) no-repeat 0 0;
+
+}
+
+.select-list {
+    display: flex;
+    line-height: 70px;
+}
+
+.select-item {
+    position: relative;
+}
+
+.select-item a {
+    display: block;
+    padding: 0 20px;
+    color: #ccc;
+}
+
+.select-item:last-child a::after {
+    position: absolute;
+    content: "";
+    width: 28px;
+    height: 19px;
+    background-image: url("@/assets/frame/topbar.png");
+    background-position: -190px 0;
+    top: 20px;
+    right: -15px;
+}
+
+.select-item:hover a, .select-item .active {
+    color: #fff;
+    background: #000;
+    text-decoration: none;
+}
+
+.active .icon {
+    position: absolute;
+    display: inline-block;
+    width: 12px;
+    height: 7px;
+    bottom: -1px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background: url("@/assets/frame/topbar.png") no-repeat -226px 0;
+}
+
+.HeaderRight {
+    display: flex;
+    align-items: center;
+    color: #ccc;
+    font-size: 12px;
+}
+
+.search {
+    width: 158px;
+    height: 32px;
+    border-radius: 16px;
+}
+
+.search input::placeholder {
+    font-size: 12px;
+}
+
+.creator-center {
+    width: 90px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border: 1px solid #666;
+    border-radius: 16px;
+    margin: 0 16px;
+    cursor: pointer;
+
+    :hover {
+        color: #fff;
+    }
+}
+
+.divider {
+    height: 5px;
+    background-color: #C20C0C;
+}
+
+.small-header {
+    height: 33px;
+    border-bottom: 2px solid #C10D0C;
+    padding: 0 10px 4px 34px;
+    background: url("@/assets/frame/sprite_02.png") no-repeat -225px -154px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.small_header_left {
+    display: flex;
+    align-items: center;
+}
+
+.small_header_left h3 {
+    font-size: 20px;
+    font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif;
+    margin-right: 20px;
+}
+
+.small_header_keyword {
+    display: flex;
+}
+
+.small_header_item {
+    display: flex;
+    align-items: center;
+
+    &:last-child {
+        .small_header_item_divider {
+            display: none;
+        }
+    }
+}
+
+.small_header_item_item {
+    color: #333;
+
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+
+.small_header_right {
+    display: flex;
+    align-items: center;
+
+    .small_header_right_icon{
+        background: url("@/assets/frame/sprite_02.png") no-repeat;
+        background-position: 0 -240px;
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-left: 4px;
+    }
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+.small_header_item_divider {
+    margin: 0 10px;
+    color: #ccc;
+}
+
+.Songitem {
+    width: 140px;
+    height: 204px;
+    padding-top: 20px;
+    padding-right: 30px;
+}
+
+.Songitem_top {
+    position: relative;
+
+    & > img {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+.Songitem_cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    right: 0;
+    bottom: 0;
+    text-indent: -9999px;
+    background: url(/src/assets/frame/sprite_cover.png) no-repeat 0 0;
+}
+
+.Songitem_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #ccc;
+    height: 27px;
+    top: 0;
+    text-indent: -9999px;
+    margin-top: 113px;
+    background: url(/src/assets/frame/sprite_cover.png) no-repeat 0 -537px;
+}
+
+.Songitem_erji {
+    margin-right: 5px;
+    display: block;
+    width: 14px;
+    height: 11px;
+    background: url("@/assets/frame/sprite_icon.png") no-repeat 0 -24px;
+}
+
+.Songitem_play {
+    display: block;
+    width: 16px;
+    height: 17px;
+    background: url(/src/assets/frame/sprite_icon.png) no-repeat 0 0;
+
+}
+
+.Songitem_bottom {
+    font-size: 12px;
+    color: #000;
+    margin-top: 5px;
+}
+
+.hot_recommend {
+    display: flex;
+
+    flex-wrap: wrap;
+}
+
+.new_Album_Item {
+
+}
+
+.new_Album_Item_Img {
+    position: relative;
+    width: 118px;
+    height: 100px;
+    overflow: hidden;
+    margin-top: 15px;
+
+    img {
+        width: 100px;
+        height: 100px;
+    }
+
+    a {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        text-indent: -9999px;
+        cursor: pointer;
+        background: url(/src/assets/frame/sprite_cover.png) no-repeat 0 -570px;
+    }
+}
+
+.new_Album_Item_Info {
+    font-size: 12px;
+    width: 100px;
+
+    .new_Album_Item_name {
+        color: #000;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .new_Album_Item_artistName {
+        color: #666;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}

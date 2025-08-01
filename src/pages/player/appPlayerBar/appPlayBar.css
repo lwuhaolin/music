@@ -1,0 +1,187 @@
+.PlayBar {
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 52px;
+    background: url(@/assets/frame/playbar_sprite.png) repeat 0 0;
+}
+
+
+.sprite_playbar {
+
+    background-size: auto;
+}
+
+.PlayBar_content {
+    margin: 3px auto;
+    width: 980px;
+    display: flex;
+}
+
+.PlayBar_content_button {
+    display: flex;
+    align-items: center;
+    width: 137px;
+
+    button {
+        background: url(@/assets/frame/playbar_sprite.png) no-repeat;
+        cursor: pointer;
+    }
+
+    & .prev {
+        width: 28px;
+        height: 28px;
+        background-position: 0 -130px;
+    }
+
+    & .play {
+        width: 36px;
+        height: 36px;
+        margin: 0 8px;
+        background-position: 0 -165px;
+    }
+
+    & .next {
+        width: 28px;
+        height: 28px;
+        background-position: -80px -130px;
+    }
+}
+
+.PlayBar_content_Info {
+    display: flex;
+    width: 642px;
+    align-items: center;
+    margin-left: 10px;
+    margin-top: 1px;
+
+    & .PlayBar_content_Info_Image {
+        width: 34px;
+        height: 34px;
+        border-radius: 5px;
+    }
+
+    .PlayBar_content_Info_info {
+        flex: 1;
+        color: #e1e1e1;
+        margin-left: 10px;
+    }
+
+    .PlayBar_content_Info_song {
+        color: #e1e1e1;
+        position: relative;
+        top: 8px;
+        left: 8px;
+
+        .PlayBar_content_Info_songer_name {
+            color: #a1a1a1;
+            margin-left: 10px;
+        }
+    }
+
+
+    .PlayBar_content_Info_progress {
+        display: flex;
+        align-items: center;
+
+        .ant-slider {
+            width: 493px;
+            margin-right: 10px;
+
+            .ant-slider-rail {
+                height: 9px;
+                background: url(@/assets/frame/progress_bar.png) right 0;
+            }
+
+            .ant-slider-track {
+                height: 9px;
+                background: url(@/assets/frame/progress_bar.png) left -66px;
+            }
+
+            .ant-slider-handle {
+                width: 22px;
+                height: 24px;
+                border: none;
+                margin-top: -5px;
+                background: url(@/assets/frame/sprite_icon.png) 0 -250px;
+            }
+
+            .ant-slider-handle::after, ::before {
+                content: none
+            }
+        }
+
+        .PlayBar_content_Info_time {
+            .PlayBar_content_Info_nowTime {
+                color: #e1e1e1;
+            }
+
+            .PlayBar_content_Info_totleTime {
+                margin: 0 3px;
+            }
+        }
+    }
+}
+
+
+.PlayBar_content_Operator {
+    display: flex;
+    position: relative;
+    top: 5px;
+
+    .PlayBar_content_Operator_favor {
+        cursor: pointer;
+        margin-top: 5px;
+        width: 25px;
+        height: 25px;
+        background: url(@/assets/frame/playbar_sprite.png) no-repeat -88px -163px;
+
+    }
+
+    .PlayBar_content_Operator_share {
+        cursor: pointer;
+        margin-top: 10px;
+        width: 25px;
+        height: 25px;
+        background: url(@/assets/frame/playbar_sprite.png) no-repeat -114px -163px;
+    }
+
+    .PlayBar_content_Operator_right {
+        display: flex;
+        align-items: center;
+        width: 126px;
+        padding-left: 13px;
+        margin-top: -6px;
+        /*background: url(@/assets/frame/playbar_sprite.png) no-repeat -147px -248px;*/
+
+
+        & .PlayBar_content_Operator_volume {
+            cursor: pointer;
+            height: 25px;
+            width: 25px;
+            background: url(@/assets/frame/playbar_sprite.png) no-repeat -2px -248px;
+
+        }
+
+        & .PlayBar_content_Operator_loop {
+            cursor: pointer;
+            height: 25px;
+            width: 25px;
+            background: url(@/assets/frame/playbar_sprite.png) no-repeat -66px -248px;
+        }
+        & .PlayBar_content_Operator_playlist {
+            cursor: pointer;
+            height: 25px;
+            padding-left: 18px;
+            text-align: center;
+            color: #ccc;
+            width: 59px;
+            background: url(@/assets/frame/playbar_sprite.png) no-repeat -42px -68px;
+
+        }
+    }
+
+}
+
