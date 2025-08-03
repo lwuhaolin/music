@@ -1,4 +1,10 @@
-import React, {memo, type ReactNode, useEffect, useRef, useState} from "react";
+import React, {
+  memo,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./appPlayBar.css";
 import { Link } from "react-router-dom";
 import { message, Slider } from "antd";
@@ -9,6 +15,13 @@ import {
 import { musicdata } from "@/pages/player/songdata.ts";
 import { getImageSize } from "@/utils/format.ts";
 import { parseLyric } from "@/utils/parse-lyric.ts";
+import { useDispatch } from "react-redux";
+import {
+  playNextSong, playPrevSong,
+  setCurrentSong,
+  setLyrics,
+} from "@/store/modules/musicSlice.ts";
+import { useAppSelector } from "@/store";
 
 interface PlayerProps {
   children?: ReactNode;
@@ -20,22 +33,26 @@ interface PlayerProps {
  * */
 const AppPlayerBar: React.FC<PlayerProps> = () => {
   const audioRef = useRef<HTMLAudioElement>(null); // audio的ref
-  const [music, setMusic] = useState<any>(); // 获取音乐的内容的state，音乐的属性都在这里
   const [isPlaying, setIsPlaying] = useState<boolean>(false); // 判断音乐是否播放
   const [progress, setProgress] = useState<number>(0); // 进度条的state
   const [currentTime, setCurrentTime] = useState<number>(0); // 播放当前时间的state
-  const [Lyrics, setLyrics] = useState<any>();
   const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useDispatch();
+  const { currentSong, Lyrics, currentIndex } = useAppSelector(
+    (store) => store.music,
+  );
+
   // 副作用获取音乐
   useEffect(() => {
-    getMusic(musicdata[0].id).then((res) => setMusic(res.data[0]));
-    console.log('musics',111)
-    getMusicLyric(musicdata[0].id).then((res) =>
-      setLyrics(parseLyric(res.lrc.lyric)),
+    getMusic(musicdata[currentIndex].id).then((res) =>
+      dispatch(setCurrentSong(res.data[0])),
     );
-  }, []);
+    getMusicLyric(musicdata[currentIndex].id).then((res) =>
+      dispatch(setLyrics(parseLyric(res.lrc.lyric))),
+    );
+  }, [currentIndex]);
   // 格式化时间
-  const formatTime = (seconds:number) => {
+  const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     const formatMinutes = String(mins).padStart(2, "0");
@@ -54,7 +71,7 @@ const AppPlayerBar: React.FC<PlayerProps> = () => {
   // 自动更新进度条
   const updateProgress = () => {
     const currentTime = audioRef.current!.currentTime;
-    setProgress(((1000 * currentTime) / music.time) * 100);
+    setProgress(((1000 * currentTime) / currentSong.time) * 100);
     setCurrentTime(currentTime);
 
     // 自动更新歌词
@@ -67,10 +84,10 @@ const AppPlayerBar: React.FC<PlayerProps> = () => {
       }
     }
     messageApi.open({
-      content:Lyrics[index].content,
+      content: Lyrics[index].content,
       duration: 0,
-      key:1
-    })
+      key: 1,
+    });
   };
   // 点击进度条切换音乐进度函数
   const MouseUpSliderChange = (value) => {
@@ -80,13 +97,20 @@ const AppPlayerBar: React.FC<PlayerProps> = () => {
   };
   const handleSliderChange = (value: number) => {
     audioRef.current?.pause();
-    const thisTime = ((value / 100) * music?.time) / 1000;
-    // console.log(thisTime, music?.time);
+    const thisTime = ((value / 100) * currentSong?.time) / 1000;
+    // console.log(thisTime, currentSong?.time);
     audioRef.current!.currentTime = thisTime;
-    setProgress(((1000 * thisTime) / music.time) * 100);
+    setProgress(((1000 * thisTime) / currentSong.time) * 100);
     setCurrentTime(thisTime);
   };
-
+  // 上一首
+  const headlePrevMusic = () => {
+    dispatch(playPrevSong());
+  }
+  // 下一首
+  const headleNextMusic = () => {
+    dispatch(playNextSong());
+  };
   // 歌词展示
   // console.log(Lyrics)
   return (
@@ -97,14 +121,14 @@ const AppPlayerBar: React.FC<PlayerProps> = () => {
         <div className="PlayBar_content">
           <audio
             ref={audioRef}
-            src={music?.url}
+            src={currentSong?.url}
             onTimeUpdate={updateProgress}
             onEnded={togglePlayPause}
           />
           <div className="PlayBar_content_button">
-            <button className="prev"></button>
+            <button className="prev" onClick={headlePrevMusic}></button>
             <button className="play" onClick={togglePlayPause}></button>
-            <button className="next"></button>
+            <button className="next" onClick={headleNextMusic}></button>
           </div>
 
           <div className="PlayBar_content_Info">
@@ -116,10 +140,10 @@ const AppPlayerBar: React.FC<PlayerProps> = () => {
             <div className="PlayBar_content_Info_info">
               <div className="PlayBar_content_Info_song">
                 <span className="PlayBar_content_Info_song_name">
-                  {musicdata[0].name}
+                  {musicdata[currentIndex].name}
                 </span>
                 <span className="PlayBar_content_Info_songer_name">
-                  {musicdata[0].ar[0].name}
+                  {musicdata[currentIndex].ar[0].name}
                 </span>
               </div>
               <div className="PlayBar_content_Info_progress">
@@ -137,7 +161,7 @@ const AppPlayerBar: React.FC<PlayerProps> = () => {
                   </span>
                   <span className="PlayBar_content_Info_divider">/</span>
                   <span className="PlayBar_content_Info_totleTime">
-                    {formatTime(music?.time / 1000)}
+                    {formatTime(currentSong?.time / 1000)}
                   </span>
                 </div>
               </div>
@@ -160,6 +184,5 @@ const AppPlayerBar: React.FC<PlayerProps> = () => {
     </>
   );
 };
-
 
 export default memo(AppPlayerBar);

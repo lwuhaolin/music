@@ -1,6 +1,6 @@
 const parseExp = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
 
-interface ILyric {
+export interface ILyric {
   finalTime: number;
   content: string;
 }
@@ -22,5 +22,6 @@ export const parseLyric = (lyric) => {
       lyrics.push(lineObj);
     }
   }
+  console.log(lyrics)
   return lyrics;
 };
