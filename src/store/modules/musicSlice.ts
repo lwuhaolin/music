@@ -5,7 +5,6 @@ import {
 } from "@/store/modules/playMode.ts";
 import { createSlice } from "@reduxjs/toolkit";
 import { type ILyric } from "@/utils/parse-lyric.ts";
-import { musicdata } from "@/pages/player/songdata.ts"; // 播放器状态接口
 
 // 播放器状态接口
 interface PlayerState {
@@ -31,6 +30,8 @@ interface PlayerState {
   currentLyricIndex: number;
   // 播放历史列表
   playHistory: Song[];
+  // 是否正在播放
+  isPlaying: boolean;
 }
 
 const initialState: PlayerState = {
@@ -40,31 +41,40 @@ const initialState: PlayerState = {
   currentTime: 0,
   duration: 0,
   playlist: [],
-  currentIndex: 0,
+  currentIndex: -1,
   playMode: PlayMode.SEQUENCE,
   Lyrics: [],
   currentLyricIndex: -1,
   playHistory: [] as Song[],
+  isPlaying: false,
 };
-
-const addHistorySong = (historySong: Song[], song: Song) => {
-  const newHistorySong = [...historySong];
-  const existingIndex = newHistorySong.findIndex((item) => item.id === song.id);
-  if (existingIndex !== -1) {
-    newHistorySong.splice(existingIndex, 1);
-  }
-  newHistorySong.push(song);
-  if (newHistorySong.length > 10) {
-    newHistorySong.shift();
-  }
-
-  return newHistorySong;
-};
+/**
+ * 这个本来是添加歌曲到播放历史列表的，但是因为没有实现播放历史列表，所以暂时没有用到
+ * 我发现要弄播放历史列表的话，需要重写整个列表逻辑，所以先注释掉，有空的时候再写
+ * 目前的话随机播放无法实现上一曲
+ */
+// const addHistorySong = (historySong: Song[], song: Song) => {
+//   const newHistorySong = [...historySong];
+//   const existingIndex = newHistorySong.findIndex((item) => item.id === song.id);
+//   if (existingIndex !== -1) {
+//     newHistorySong.splice(existingIndex, 1);
+//   }
+//   newHistorySong.push(song);
+//   if (newHistorySong.length > 10) {
+//     newHistorySong.shift();
+//   }
+//
+//   return newHistorySong;
+// };
 
 const playerSlice = createSlice({
   name: "player",
   initialState,
   reducers: {
+    // 清空音乐列表
+    clearMusicList(state) {
+      state.playlist = [];
+    },
     // 设置当前音乐
     setCurrentSong(state, action) {
       state.currentSong = action.payload;
@@ -83,20 +93,39 @@ const playerSlice = createSlice({
       }
     },
     // 设置播放模式
-    setPlayMode(state, action: { payload: PlayModeType }) {
-      state.playMode = action.payload;
+    setPlayMode(state) {
+      const mode = state.playMode;
+      switch (mode) {
+        case PlayMode.SEQUENCE:
+          state.playMode = PlayMode.LOOP;
+          break;
+        case PlayMode.LOOP:
+          state.playMode = PlayMode.RANDOM;
+          break;
+        case PlayMode.RANDOM:
+          state.playMode = PlayMode.SEQUENCE;
+          break;
+      }
     },
     // 设置播放索引
     setCurrentIndex(state, action: { payload: number }) {
       state.currentIndex = action.payload;
     },
+    // 控制播放
+    setIsPlaying(state, action) {
+      state.isPlaying = action.payload;
+    },
     // 播放下一首
     playNextSong(state) {
-      const length = musicdata.length;
+      const length = state.playlist.length;
       let newIndex = state.currentIndex;
       switch (state.playMode) {
         case PlayMode.SEQUENCE:
-          newIndex = (state.currentIndex % length) + 1;
+          if(state.currentIndex<length-1){
+            newIndex = state.currentIndex+1;
+          }else{
+            newIndex = 0;
+          }
           break;
         case PlayMode.LOOP:
           break;
@@ -117,7 +146,7 @@ const playerSlice = createSlice({
     },
     // 播放上一首
     playPrevSong(state) {
-      const length = musicdata.length;
+      const length = state.playlist.length;
       let index = state.currentIndex;
       switch (state.playMode) {
         case PlayMode.SEQUENCE:
@@ -136,9 +165,14 @@ const playerSlice = createSlice({
 
 export const {
   setCurrentSong,
+  setCurrentIndex,
   setLyrics,
   playNextSong,
+  setPlayMode,
+  addSongList,
   playPrevSong,
+  setIsPlaying,
+  clearMusicList,
 } = playerSlice.actions;
 const playerReducer = playerSlice.reducer;
 

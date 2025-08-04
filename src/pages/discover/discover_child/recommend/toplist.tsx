@@ -2,6 +2,9 @@ import React, { type ReactNode, useEffect, useState } from "react";
 import { SmallHeader } from "@/components/SmallHeader.tsx";
 import { getPlayListDetail } from "@/pages/discover/discover_child/recommend/service";
 import { getImageSize } from "@/utils/format.ts";
+import { useDispatch } from "react-redux";
+import {addSongList, clearMusicList, setCurrentIndex} from "@/store/modules/musicSlice.ts";
+import { useAppSelector } from "@/store";
 
 interface IProps {
   children?: ReactNode;
@@ -21,6 +24,8 @@ export const TopList: React.FC<IProps> = () => {
     };
     fetchPlaylist().then((res) => setPlayList(res));
   }, []);
+  const dispatch = useDispatch();
+  const { playlist } = useAppSelector((store) => store.music);
   // 方式2
   // useEffect(() => {
   //   // 通过promise数组获取数据，统一返回promise
@@ -31,7 +36,28 @@ export const TopList: React.FC<IProps> = () => {
   //   Promise.all(promise).then(res=>setPlayList(res))
   // }, []);
   // 方式3:分三次返回，用三个useState,
-  // console.log(playList);
+
+
+  // 播放音乐
+  const headlePlay = (item) => {
+    const length = playlist.length;
+    dispatch(addSongList(item));
+    dispatch(setCurrentIndex(length));
+    // dispatch(setIsPlaying(true))
+
+  };
+  // 添加音乐到列表中
+  function headleAdd(item: any) {
+    dispatch(addSongList(item));
+  }
+  // 播放音乐列表
+  function headlePlayList(item: any) {
+    dispatch(clearMusicList())
+    for(let listItem of item.tracks){
+      dispatch(addSongList(listItem))
+    }
+    dispatch(setCurrentIndex(0));
+  }
   return (
     <div>
       <SmallHeader
@@ -48,29 +74,40 @@ export const TopList: React.FC<IProps> = () => {
               <div className="TopList_content_header_tit">
                 <h3>{item.name}</h3>
                 <div className="btn">
-                  <a>播放</a>
-                  <a>收藏</a>
+                  <a title="播放" onClick={() => headlePlayList(item)}>播放</a>
+                  <a title="收藏">收藏</a>
                 </div>
               </div>
             </div>
             <div className="TopList_content_list">
-              {item.tracks.slice(0, 10).map((item, index) => {
+              {item.tracks.slice(0, 10).map((item: any, index: number) => {
+                // console.log(item);
                 return (
                   <div key={item.id} className="list-item">
                     <div className="rank">{index + 1}</div>
                     <div className="info">
                       <span className="name text-nowrap">{item.name}</span>
                       <div className="operate">
-                        <button className="btn play"></button>
-                        <button className="btn addto"></button>
-                        <button className="btn favor"></button>
+                        <a
+                          onClick={() => headlePlay(item)}
+                          title="播放"
+                          className="btn play"
+                        ></a>
+                        <a
+                          onClick={() => headleAdd(item)}
+                          title="添加到播放列表"
+                          className="btn addto"
+                        ></a>
+                        <a title="收藏" className="btn favor"></a>
                       </div>
                     </div>
                   </div>
                 );
               })}
             </div>
-              <div className="TopList_content_footer"><a href={'/discover/ranking'}>查看全部 &gt;</a></div>
+            <div className="TopList_content_footer">
+              <a href={"/discover/ranking"}>查看全部 &gt;</a>
+            </div>
           </div>
         ))}
       </div>

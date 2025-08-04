@@ -3,14 +3,14 @@
     z-index: 99;
     left: 0;
     right: 0;
-    bottom: 0;
-    height: 52px;
+    bottom: -20px;
+    height: 72px;
     background: url(@/assets/frame/playbar_sprite.png) repeat 0 0;
+    transition: bottom 0.5s ease;
 }
 
 
 .sprite_playbar {
-
     background-size: auto;
 }
 
@@ -41,6 +41,13 @@
         height: 36px;
         margin: 0 8px;
         background-position: 0 -165px;
+    }
+
+    & .stop {
+        width: 36px;
+        height: 36px;
+        margin: 0 8px;
+        background-position: 0 -204px;
     }
 
     & .next {
@@ -161,16 +168,33 @@
             cursor: pointer;
             height: 25px;
             width: 25px;
-            background: url(@/assets/frame/playbar_sprite.png) no-repeat -2px -248px;
+            background: url(@/assets/frame/playbar_sprite.png) no-repeat -5px -246px;
 
+            &.muted {
+                background: url(@/assets/frame/playbar_sprite.png) no-repeat -104px -68px;
+            }
         }
 
-        & .PlayBar_content_Operator_loop {
+        & .PlayBar_content_Operator_sequence {
             cursor: pointer;
             height: 25px;
             width: 25px;
-            background: url(@/assets/frame/playbar_sprite.png) no-repeat -66px -248px;
+            background: url(@/assets/frame/playbar_sprite.png) no-repeat -3px -344px;
         }
+
+        & .PlayBar_content_Operator_random {
+            cursor: pointer;
+            height: 25px;
+            width: 25px;
+            background: url(@/assets/frame/playbar_sprite.png) no-repeat -65px -248px;
+        }
+        & .PlayBar_content_Operator_loop{
+            cursor: pointer;
+            height: 25px;
+            width: 25px;
+            background: url(@/assets/frame/playbar_sprite.png) no-repeat -66px -344px;
+        }
+
         & .PlayBar_content_Operator_playlist {
             cursor: pointer;
             height: 25px;
@@ -184,4 +208,55 @@
     }
 
 }
+
+.volume-control {
+    position: relative;
+    display: inline-block;
+}
+
+.volume-slider-container {
+    position: absolute;
+    bottom:110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    z-index: 100;
+}
+
+.volume-slider-wrapper {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.volume-slider-wrapper .ant-slider-vertical {
+    height: 80px;
+    margin: 0;
+}
+
+.PlayLock{
+    position: absolute;
+    bottom:88%;
+    left:95%;
+    width:57px;
+    background: url(@/assets/frame/playbar_sprite.png) no-repeat 7px -373px;
+    height: 26px;
+    display: flex;
+}
+
+.PlayLock a{
+    margin-left: 50%;
+    margin-top: 22%;
+    width:12px;
+    height: 12px;
+    display: block;
+    background: url(@/assets/frame/playbar_sprite.png) no-repeat ;
+    cursor: pointer;
+    z-index: 100;
+}
+
 

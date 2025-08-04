@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import Header from "@/components/Header.tsx";
 import Footer from "@/components/Footer.tsx";
 import "./App.css";
-import  AppPlayerBar  from "@/pages/player/appPlayerBar";
+import AppPlayerBar from "@/pages/player/appPlayerBar";
 
 function App() {
   return (

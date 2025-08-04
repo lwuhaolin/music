@@ -138,14 +138,30 @@
     width: 116px;
     margin: 6px 0 0 10px;
 
-    .btn a {
+    .btn a:first-child {
         display: block;
         float: left;
         width: 22px;
         height: 22px;
         margin-right: 10px;
+        margin-top:10px;
+        cursor:pointer;
         text-indent: -9999px;
-        background-position: -267px -205px;
+        background: url(@/assets/frame/sprite_02.png) no-repeat -267px -205px;
+        /*background: url(../../style/web2/img/index/index.png?944467b…) no-repeat 0 9999px;*/
+        text-decoration: none;
+    }
+
+    .btn a:last-child {
+        display: block;
+        float: left;
+        width: 22px;
+        height: 22px;
+        margin-right: 10px;
+        margin-top:10px;
+        cursor:pointer;
+        text-indent: -9999px;
+        background: url(@/assets/frame/sprite_02.png) no-repeat -300px -205px;
         /*background: url(../../style/web2/img/index/index.png?944467b…) no-repeat 0 9999px;*/
         text-decoration: none;
     }
@@ -173,20 +189,26 @@
         .info {
             color: #000;
             width: 170px;
-            height: 17px;
+            min-height: 17px;
             line-height: 17px;
             display: flex;
             justify-content: space-between;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
             .name {
                 flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             .operate {
-                display: flex;
                 align-items: center;
                 display: none;
                 width: 82px;
+                flex-shrink: 0;
 
                 .btn {
                     width: 17px;
@@ -197,19 +219,22 @@
                 }
 
                 .play {
-                    background: url(@/assets/frame/sprite_02.png) no-repeat;
-                    background-position: -267px -268px;
+                    background: url(@/assets/frame/sprite_02.png) no-repeat -267px -268px;
+                }
+
+                .pause {
+                    background: url(@/assets/frame/sprite_02.png) no-repeat -40px -165px;;
                 }
 
                 .addto {
                     position: relative;
-                    background-position: 0 -700px;
-                    background: url(@/assets/frame/sprite_icon2.png) no-repeat;
+                    top:2px;
+                    background: url(@/assets/frame/sprite_icon2.png) no-repeat 0 -700px;
                 }
 
                 .favor {
-                    background: url(@/assets/frame/sprite_02.png) no-repeat;
-                    background-position: -297px -268px;                }
+                    background: url(@/assets/frame/sprite_02.png) no-repeat -297px -268px;
+                }
             }
         }
 
@@ -221,7 +246,7 @@
             }
 
             .operate {
-                display: block;
+                display: flex;
             }
         }
     }
